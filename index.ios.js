@@ -1,5 +1,5 @@
 import React from 'react'
-import {TabBarIOS, View, ListView, Text, AppRegistry} from 'react-native'
+import {TabBarIOS, View, ScrollView, Text, AppRegistry} from 'react-native'
 
 const items = [
   'Bacon',
@@ -21,66 +21,38 @@ const items = [
   'Green Peppers',
 ]
 
-class List extends React.Component {
-  state = {
-    dataSource: new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-    }),
+function Scroller({showLoadingScreen, data}) {
+  if (showLoadingScreen && !data.length) {
+    return <View><Text>Loading…</Text></View>
   }
 
-  componentWillMount() {
-    this.setState({dataSource: this.state.dataSource.cloneWithRows(this.props.data)})
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({dataSource: this.state.dataSource.cloneWithRows(newProps.data)})
-  }
-
-  render() {
-    if (this.props.showLoadingScreen && !this.state.dataSource.getRowCount()) {
-      return <View><Text>Loading…</Text></View>
-    }
-
-    return (
-      <ListView
-        enableEmptySections
-        automaticallyAdjustContentInsets={true}
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) =>
-          <View style={{height: 44, justifyContent: 'center', borderBottomWidth: 1}}>
-            <Text>{rowData}</Text>
-          </View>}
-      />
-    )
-  }
+  return (
+    <ScrollView automaticallyAdjustContentInsets={true}>
+      {data.map((rowData, i) =>
+        <View key={i} style={{height: 44, justifyContent: 'center'}}>
+          <Text>{rowData}</Text>
+        </View>)}
+    </ScrollView>
+  )
 }
 
 class Instant extends React.Component {
-  state = {
-    foodItems: items,
-  }
+  state = {foodItems: items}
 
   render() {
-    return (
-      <List data={this.state.foodItems} />
-    )
+    return <Scroller data={this.state.foodItems} />
   }
 }
 
 class Delayed extends React.Component {
-  state = {
-    foodItems: [],
-  }
+  state = {foodItems: []}
 
   componentWillMount() {
-    setTimeout(() => this.setState({foodItems: items}), 1000)
+    setTimeout(() => this.setState({foodItems: items}), 16)
   }
 
   render() {
-    return (
-      <List showLoadingScreen={this.props.showLoadingScreen} data={this.state.foodItems} />
-    )
+    return <Scroller showLoadingScreen={this.props.showLoadingScreen} data={this.state.foodItems} />
   }
 }
 
