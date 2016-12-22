@@ -6,4 +6,5 @@ Steps to reproduce:
 2. `yarn`
 3. `yarn run ios`
 4. Scroll to bottom of Instant tab, see that data does not hide behind tabbar
-5. Scroll to bottom of Delayed tab, see that data is hidden
+5. Scroll to bottom of Delayed (OK) tab, see that data does not hide behind tabbar
+6. Scroll to bottom of Delayed (BAD) tab, see that data is hidden
