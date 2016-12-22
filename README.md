@@ -2,7 +2,7 @@
 
 Steps to reproduce:
 
-1. Clone repo
+1. `git clone https://github.com/hawkrives/aao-delayed-listview-repro.git`
 2. `yarn`
 3. `yarn run ios`
 4. Scroll to bottom of Instant tab, see that data does not hide behind tabbar
