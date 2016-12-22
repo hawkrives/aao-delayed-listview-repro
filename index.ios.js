@@ -1,34 +1,16 @@
 import React from 'react'
 import {TabBarIOS, View, ScrollView, Text, AppRegistry} from 'react-native'
 
-const items = [
-  'Bacon',
-  'BBQ Chicken',
-  'Black Olives',
-  'Bosco Sticks',
-  'Bottled Beverages',
-  'Buffalo Chicken',
-  'Canadian Bacon',
-  'Cheese Quesadilla',
-  'Chicken Bacon Ranch',
-  'Chicken Pesto',
-  'Chicken Strips',
-  'Chicken',
-  'Chips & Salsa',
-  'Fountain Drinks',
-  'Garden Pita',
-  'Garlic Cheesy Bread',
-  'Green Peppers',
-]
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
-function Scroller({showLoadingScreen, data}) {
-  if (showLoadingScreen && !data.length) {
-    return <View><Text>Loading…</Text></View>
+function Scroller({showLoadingScreen}) {
+  if (showLoadingScreen) {
+    return <View style={{marginTop:20}}><Text>Loading…</Text></View>
   }
 
   return (
     <ScrollView automaticallyAdjustContentInsets>
-      {data.map((rowData, i) =>
+      {items.map((rowData, i) =>
         <View key={i} style={{height: 44, justifyContent: 'center'}}>
           <Text>{rowData}</Text>
         </View>)}
@@ -36,44 +18,33 @@ function Scroller({showLoadingScreen, data}) {
   )
 }
 
-class Instant extends React.Component {
-  state = {foodItems: items}
-
-  render() {
-    return <Scroller data={this.state.foodItems} />
-  }
-}
-
-class Delayed extends React.Component {
-  state = {foodItems: []}
+class Interstitial extends React.Component {
+  state = {loading: true}
+  stopLoading = () => this.setState({loading: false})
 
   componentWillMount() {
-    setTimeout(() => this.setState({foodItems: items}), 16)
+    setTimeout(this.stopLoading, 1000)
   }
 
   render() {
-    return <Scroller showLoadingScreen={this.props.showLoadingScreen} data={this.state.foodItems} />
+    return <Scroller showLoadingScreen={this.state.loading} />
   }
 }
 
 class TabbedView extends React.Component {
   state = {tab: 0}
   setTab = (i) => () => this.setState({tab: i})
-  isTab = i => this.state.tab === i
+  isActive = i => this.state.tab === i
 
   render() {
     return (
       <TabBarIOS translucent>
-        <TabBarIOS.Item title='Instant' selected={this.isTab(0)} onPress={this.setTab(0)}>
-          <Instant />
+        <TabBarIOS.Item title='Instant (OK)' selected={this.isActive(0)} onPress={this.setTab(0)}>
+          <Scroller />
         </TabBarIOS.Item>
 
-        <TabBarIOS.Item title='Delayed (OK)' selected={this.isTab(1)} onPress={this.setTab(1)}>
-          <Delayed />
-        </TabBarIOS.Item>
-
-        <TabBarIOS.Item title='Delayed (BAD)' selected={this.isTab(2)} onPress={this.setTab(2)}>
-          <Delayed showLoadingScreen />
+        <TabBarIOS.Item title='Interstitial (BAD)' selected={this.isActive(1)} onPress={this.setTab(1)}>
+          <Interstitial />
         </TabBarIOS.Item>
       </TabBarIOS>
     )
