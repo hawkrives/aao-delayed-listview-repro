@@ -27,7 +27,7 @@ function Scroller({showLoadingScreen, data}) {
   }
 
   return (
-    <ScrollView automaticallyAdjustContentInsets={true}>
+    <ScrollView automaticallyAdjustContentInsets>
       {data.map((rowData, i) =>
         <View key={i} style={{height: 44, justifyContent: 'center'}}>
           <Text>{rowData}</Text>
@@ -63,17 +63,17 @@ class TabbedView extends React.Component {
 
   render() {
     return (
-      <TabBarIOS style={{marginTop: 20}} translucent={true}>
+      <TabBarIOS translucent>
         <TabBarIOS.Item title='Instant' selected={this.isTab(0)} onPress={this.setTab(0)}>
           <Instant />
         </TabBarIOS.Item>
 
         <TabBarIOS.Item title='Delayed (OK)' selected={this.isTab(1)} onPress={this.setTab(1)}>
-          <Delayed showLoadingScreen={false} />
+          <Delayed />
         </TabBarIOS.Item>
 
         <TabBarIOS.Item title='Delayed (BAD)' selected={this.isTab(2)} onPress={this.setTab(2)}>
-          <Delayed showLoadingScreen={true} />
+          <Delayed showLoadingScreen />
         </TabBarIOS.Item>
       </TabBarIOS>
     )
